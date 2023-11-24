@@ -42,11 +42,15 @@
             this.ch1_Faltou = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mns1_Navegacao = new System.Windows.Forms.MenuStrip();
             this.tsi1_Open = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsi1_Generate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsi1_GenerateCSV = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsi1_GenerateJSON = new System.Windows.Forms.ToolStripMenuItem();
             this.tbp_Plano = new System.Windows.Forms.TabPage();
+            this.txt2_Search = new System.Windows.Forms.TextBox();
+            this.lbl2_File = new System.Windows.Forms.Label();
             this.mns2_Execucao = new System.Windows.Forms.MenuStrip();
             this.tsi2_Open = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsi2_Generate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsi2_GenerateXML = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsi2_GenerateBIN = new System.Windows.Forms.ToolStripMenuItem();
             this.tsi2_Update = new System.Windows.Forms.ToolStripMenuItem();
             this.lvw2_Plano = new System.Windows.Forms.ListView();
             this.ch2_Turma = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -55,7 +59,6 @@
             this.ch2_HorasAt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ch2_TotalHoras = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.fld2_Plano = new System.Windows.Forms.OpenFileDialog();
-            this.lbl2_File = new System.Windows.Forms.Label();
             this.tbc_Aulas.SuspendLayout();
             this.tbp_RegistoAulas.SuspendLayout();
             this.mns1_Navegacao.SuspendLayout();
@@ -216,7 +219,8 @@
             this.mns1_Navegacao.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mns1_Navegacao.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsi1_Open,
-            this.tsi1_Generate});
+            this.tsi1_GenerateCSV,
+            this.tsi1_GenerateJSON});
             this.mns1_Navegacao.Location = new System.Drawing.Point(3, 3);
             this.mns1_Navegacao.Name = "mns1_Navegacao";
             this.mns1_Navegacao.Size = new System.Drawing.Size(1408, 33);
@@ -230,15 +234,23 @@
             this.tsi1_Open.Text = "Open";
             this.tsi1_Open.Click += new System.EventHandler(this.tsi1_Open_Click);
             // 
-            // tsi1_Generate
+            // tsi1_GenerateCSV
             // 
-            this.tsi1_Generate.Name = "tsi1_Generate";
-            this.tsi1_Generate.Size = new System.Drawing.Size(98, 29);
-            this.tsi1_Generate.Text = "Generate";
-            this.tsi1_Generate.Click += new System.EventHandler(this.tsi1_Generate_Click);
+            this.tsi1_GenerateCSV.Name = "tsi1_GenerateCSV";
+            this.tsi1_GenerateCSV.Size = new System.Drawing.Size(142, 29);
+            this.tsi1_GenerateCSV.Text = "Generate (.csv)";
+            this.tsi1_GenerateCSV.Click += new System.EventHandler(this.tsi1_GenerateCSV_Click);
+            // 
+            // tsi1_GenerateJSON
+            // 
+            this.tsi1_GenerateJSON.Name = "tsi1_GenerateJSON";
+            this.tsi1_GenerateJSON.Size = new System.Drawing.Size(150, 29);
+            this.tsi1_GenerateJSON.Text = "Generate (.json)";
+            this.tsi1_GenerateJSON.Click += new System.EventHandler(this.tsi1_GenerateJSON_Click);
             // 
             // tbp_Plano
             // 
+            this.tbp_Plano.Controls.Add(this.txt2_Search);
             this.tbp_Plano.Controls.Add(this.lbl2_File);
             this.tbp_Plano.Controls.Add(this.mns2_Execucao);
             this.tbp_Plano.Controls.Add(this.lvw2_Plano);
@@ -250,13 +262,30 @@
             this.tbp_Plano.Text = "Plano Curricular";
             this.tbp_Plano.UseVisualStyleBackColor = true;
             // 
+            // txt2_Search
+            // 
+            this.txt2_Search.Location = new System.Drawing.Point(1213, 39);
+            this.txt2_Search.Name = "txt2_Search";
+            this.txt2_Search.Size = new System.Drawing.Size(184, 26);
+            this.txt2_Search.TabIndex = 23;
+            this.txt2_Search.TextChanged += new System.EventHandler(this.txt2_Search_TextChanged);
+            // 
+            // lbl2_File
+            // 
+            this.lbl2_File.AutoSize = true;
+            this.lbl2_File.Location = new System.Drawing.Point(5, 124);
+            this.lbl2_File.Name = "lbl2_File";
+            this.lbl2_File.Size = new System.Drawing.Size(0, 20);
+            this.lbl2_File.TabIndex = 22;
+            // 
             // mns2_Execucao
             // 
             this.mns2_Execucao.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.mns2_Execucao.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mns2_Execucao.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsi2_Open,
-            this.tsi2_Generate,
+            this.tsi2_GenerateXML,
+            this.tsi2_GenerateBIN,
             this.tsi2_Update});
             this.mns2_Execucao.Location = new System.Drawing.Point(3, 3);
             this.mns2_Execucao.Name = "mns2_Execucao";
@@ -267,21 +296,28 @@
             // tsi2_Open
             // 
             this.tsi2_Open.Name = "tsi2_Open";
-            this.tsi2_Open.Size = new System.Drawing.Size(72, 32);
+            this.tsi2_Open.Size = new System.Drawing.Size(72, 29);
             this.tsi2_Open.Text = "Open";
             this.tsi2_Open.Click += new System.EventHandler(this.tsi2_Open_Click);
             // 
-            // tsi2_Generate
+            // tsi2_GenerateXML
             // 
-            this.tsi2_Generate.Name = "tsi2_Generate";
-            this.tsi2_Generate.Size = new System.Drawing.Size(98, 32);
-            this.tsi2_Generate.Text = "Generate";
-            this.tsi2_Generate.Click += new System.EventHandler(this.tsi2_Generate_Click);
+            this.tsi2_GenerateXML.Name = "tsi2_GenerateXML";
+            this.tsi2_GenerateXML.Size = new System.Drawing.Size(145, 29);
+            this.tsi2_GenerateXML.Text = "Generate (.xml)";
+            this.tsi2_GenerateXML.Click += new System.EventHandler(this.tsi2_GenerateXML_Click);
+            // 
+            // tsi2_GenerateBIN
+            // 
+            this.tsi2_GenerateBIN.Name = "tsi2_GenerateBIN";
+            this.tsi2_GenerateBIN.Size = new System.Drawing.Size(138, 29);
+            this.tsi2_GenerateBIN.Text = "Generate (bin)";
+            this.tsi2_GenerateBIN.Click += new System.EventHandler(this.tsi2_GenerateBIN_Click);
             // 
             // tsi2_Update
             // 
             this.tsi2_Update.Name = "tsi2_Update";
-            this.tsi2_Update.Size = new System.Drawing.Size(86, 32);
+            this.tsi2_Update.Size = new System.Drawing.Size(86, 29);
             this.tsi2_Update.Text = "Update";
             this.tsi2_Update.Click += new System.EventHandler(this.tsi2_Update_Click);
             // 
@@ -330,14 +366,6 @@
             // 
             this.fld2_Plano.FileName = "openFileDialog1";
             this.fld2_Plano.FileOk += new System.ComponentModel.CancelEventHandler(this.fld2_Plano_FileOk);
-            // 
-            // lbl2_File
-            // 
-            this.lbl2_File.AutoSize = true;
-            this.lbl2_File.Location = new System.Drawing.Point(5, 124);
-            this.lbl2_File.Name = "lbl2_File";
-            this.lbl2_File.Size = new System.Drawing.Size(0, 20);
-            this.lbl2_File.TabIndex = 22;
             // 
             // Form1
             // 
@@ -390,13 +418,16 @@
         private System.Windows.Forms.ColumnHeader ch2_TotalHoras;
         private System.Windows.Forms.MenuStrip mns2_Execucao;
         private System.Windows.Forms.ToolStripMenuItem tsi2_Open;
-        private System.Windows.Forms.ToolStripMenuItem tsi2_Generate;
+        private System.Windows.Forms.ToolStripMenuItem tsi2_GenerateXML;
         private System.Windows.Forms.OpenFileDialog fld2_Plano;
         private System.Windows.Forms.MenuStrip mns1_Navegacao;
         private System.Windows.Forms.ToolStripMenuItem tsi1_Open;
-        private System.Windows.Forms.ToolStripMenuItem tsi1_Generate;
+        private System.Windows.Forms.ToolStripMenuItem tsi1_GenerateCSV;
         private System.Windows.Forms.ToolStripMenuItem tsi2_Update;
         private System.Windows.Forms.Label lbl2_File;
+        private System.Windows.Forms.ToolStripMenuItem tsi1_GenerateJSON;
+        private System.Windows.Forms.TextBox txt2_Search;
+        private System.Windows.Forms.ToolStripMenuItem tsi2_GenerateBIN;
     }
 }
 
