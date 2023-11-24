@@ -13,6 +13,13 @@ using System.Xml;
 
 namespace Registro_de_Aulas {
     public partial class Form1 : Form {
+
+        string[] aulasSplited = null;
+        string aulas = "";
+
+        string[] registoSplited = null;
+        string registo = "";
+
         public Form1() {
             InitializeComponent();
         }
@@ -62,7 +69,7 @@ namespace Registro_de_Aulas {
 
         #region MenuStripItems
 
-        private void tsi1_Generate_Click(object sender, EventArgs e) {
+        private void tsi1_GenerateCSV_Click(object sender, EventArgs e) {
             if (lbl1_File.Text == "")
                 return;
 
@@ -94,26 +101,31 @@ namespace Registro_de_Aulas {
                     DateTime dateTemp = DateTime.Parse(lvw1_Registo.Items[idx].SubItems[2].Text);
 
                     if (tempDate.Month == dateTemp.Month && tempDate.Year == dateTemp.Year) {
-                        MessageBox.Show(lvw1_Registo.Items[i].Text + " - " + lvw1_Registo.Items[idx].Text);
                         if (lvw1_Registo.Items[i].Text == lvw1_Registo.Items[idx].Text) {
                             if (lvw1_Registo.Items[i].SubItems[1].Text == lvw1_Registo.Items[idx].SubItems[1].Text) {
-                                if (lvw1_Registo.Items[idx].SubItems[7].Text == "FALSE")
+                                if (lvw1_Registo.Items[idx].SubItems[7].Text.ToUpper().Contains("FALSE")) {
                                     qtdHrs += Convert.ToDouble(lvw1_Registo.Items[idx].SubItems[3].Text);
+                                }                                    
                             }
                         }
                     }
                 }
                 text += ";" + lvw1_Registo.Items[i].SubItems[1].Text;
-                text += ";" + Convert.ToDecimal(qtdHrs).ToString();
+                text += ";" + Convert.ToDecimal(qtdHrs).ToString() + "\n";
             }
 
-            using (StreamWriter fs = File.CreateText("C:\\Users\\rafae\\Desktop\\HorasLecionadas.txt")) {
+            using (StreamWriter fs = File.CreateText("C:\\Users\\rafae\\Desktop\\HorasLecionadas.csv")) {
                 fs.WriteLine(text);
             }
         }
 
         private void tsi1_Open_Click(object sender, EventArgs e) {
             fld1_Aulas.ShowDialog();
+        }
+
+        private void tsi1_GenerateJSON_Click(object sender, EventArgs e)
+        {
+
         }
 
 
@@ -132,7 +144,7 @@ namespace Registro_de_Aulas {
             if (Path.GetExtension(path) != ".csv")
                 return;
 
-            string text = "";
+            aulas = "";
             using (FileStream fs = File.OpenRead(path)) {
                 byte[] b = new byte[1024];
                 UTF8Encoding temp = new UTF8Encoding(true);
@@ -140,34 +152,24 @@ namespace Registro_de_Aulas {
 
                 
                 while ((readLen = fs.Read(b, 0, b.Length)) > 0) {
-                    text += (temp.GetString(b, 0, readLen));
+                    aulas += (temp.GetString(b, 0, readLen));
                 }
 
             }
 
-            string[] info = text.Split(new char[] { '\n', ';' });
-
-            int idx = 0;
-            for (int i = 0; i < info.Length - 1; i++) {
-                DateTime date = new DateTime();
-                bool temp = DateTime.TryParse(info[i], out date);
-                if (temp) {
-                    idx = i + 1;
-                    break;
-                }
-            }
+            aulasSplited = aulas.Split(new char[] { '\n', ';' });
 
             lvw1_Registo.Items.Clear();
-            for (int i = idx; i < info.Length - 8; i+=8) {
+            for (int i = 0; i < aulasSplited.Length - 8; i+=8) {
                 ListViewItem lst = new ListViewItem();
-                lst.Text = info[i];
-                lst.SubItems.Add(info[i + 1]);
-                lst.SubItems.Add(info[i + 2]);
-                lst.SubItems.Add(info[i + 3]);
-                lst.SubItems.Add(info[i + 4]);
-                lst.SubItems.Add(info[i + 5]);
-                lst.SubItems.Add(info[i + 6]);
-                lst.SubItems.Add(info[i + 7]);
+                lst.Text = aulasSplited[i];
+                lst.SubItems.Add(aulasSplited[i + 1]);
+                lst.SubItems.Add(aulasSplited[i + 2]);
+                lst.SubItems.Add(aulasSplited[i + 3]);
+                lst.SubItems.Add(aulasSplited[i + 4]);
+                lst.SubItems.Add(aulasSplited[i + 5]);
+                lst.SubItems.Add(aulasSplited[i + 6]);
+                lst.SubItems.Add(aulasSplited[i + 7]);
 
                 lvw1_Registo.Items.Add(lst);
             }
@@ -227,23 +229,12 @@ namespace Registro_de_Aulas {
             fld2_Plano.ShowDialog();
         }
 
-        private void tsi2_Generate_Click(object sender, EventArgs e) {
-            if (lvw1_Registo.SelectedItems.Count == 0) {
-                MessageBox.Show("Não existe nenhuma turma selecionada", "Carga Horária : Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+        private void tsi2_GenerateXML_Click(object sender, EventArgs e) {
 
-            int idx = -1;
-            foreach (ListViewItem a in lvw2_Plano.Items) {
-                if (a.Text == lvw1_Registo.SelectedItems[0].Text)
-                    idx = a.Index;
-            }
-            if (idx == -1) {
-                MessageBox.Show("Não existe registo de horas para a turma selecionada", "Carga Horária : Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+        }
 
-            XmlWrite();
+        private void tsi2_GenerateBIN_Click(object sender, EventArgs e)
+        {
 
         }
 
@@ -308,7 +299,7 @@ namespace Registro_de_Aulas {
             if (Path.GetExtension(path) != ".csv")
                 return;
 
-            string text = "";
+            registo = "";
             using (FileStream fs = File.OpenRead(path)) {
                 byte[] b = new byte[1024];
                 UTF8Encoding temp = new UTF8Encoding(true);
@@ -316,33 +307,33 @@ namespace Registro_de_Aulas {
 
 
                 while ((readLen = fs.Read(b, 0, b.Length)) > 0) {
-                    text += (temp.GetString(b, 0, readLen));
+                    registo += (temp.GetString(b, 0, readLen));
                 }
 
             }
-            string[] info = text.Split(new char[] { '\n', ';' });
+            registoSplited = registo.Split(new char[] { '\n', ';' });
             
 
-            lvw2_Plano.Tag = info[0];
+            lvw2_Plano.Tag = registoSplited[0];
 
             lvw2_Plano.Items.Clear();
             int idx = 0;
-            for(int i = 0; i < info.Length -1; i++) {
+            for(int i = 0; i < registoSplited.Length -1; i++) {
                 DateTime date = new DateTime();
-                bool temp = DateTime.TryParse(info[i], out date);
+                bool temp = DateTime.TryParse(registoSplited[i], out date);
                 if (temp) {
                     idx = i+1; 
                     break;
                 }
             }
-            for (int i = idx; i < info.Length-1; i += 5) {
+            for (int i = idx; i < registoSplited.Length-1; i += 5) {
                 
                 ListViewItem lst = new ListViewItem();
-                lst.Text = info[i];
-                lst.SubItems.Add(info[i + 1]);
-                lst.SubItems.Add(info[i + 2]);
-                lst.SubItems.Add(info[i + 3]);
-                lst.SubItems.Add(info[i + 4]);
+                lst.Text = registoSplited[i];
+                lst.SubItems.Add(registoSplited[i + 1]);
+                lst.SubItems.Add(registoSplited[i + 2]);
+                lst.SubItems.Add(registoSplited[i + 3]);
+                lst.SubItems.Add(registoSplited[i + 4]);
 
                 lvw2_Plano.Items.Add(lst);
             }
@@ -351,8 +342,55 @@ namespace Registro_de_Aulas {
 
 
 
+
+
         #endregion
 
+
+
+        #region Textbox
+
+        private void txt2_Search_TextChanged(object sender, EventArgs e)
+        {
+            if (txt2_Search.Text.Trim() == "")
+                return;
+
+
+
+            lvw2_Plano.Items.Clear();
+            int idx = 0;
+            for (int i = 0; i < registoSplited.Length - 1; i++)
+            {
+                DateTime date = new DateTime();
+                bool temp = DateTime.TryParse(registoSplited[i], out date);
+                if (temp)
+                {
+                    idx = i + 1;
+                    break;
+                }
+            }
+            for (int i = idx; i < registoSplited.Length - 1; i += 5)
+            {
+                if (registoSplited[i].ToUpper().Contains(txt2_Search.Text.ToUpper()) || registoSplited[i + 1].ToUpper().Contains(txt2_Search.Text.ToUpper()) || txt2_Search.Text.Trim().Length == 0)
+                {
+                    ListViewItem lst = new ListViewItem();
+                    lst.Text = registoSplited[i];
+                    lst.SubItems.Add(registoSplited[i + 1]);
+                    lst.SubItems.Add(registoSplited[i + 2]);
+                    lst.SubItems.Add(registoSplited[i + 3]);
+                    lst.SubItems.Add(registoSplited[i + 4]);
+
+                    lvw2_Plano.Items.Add(lst);
+                }
+
+            }
+        }
+
+
+
+
+
+        #endregion
 
         #endregion
 
