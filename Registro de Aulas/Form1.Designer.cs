@@ -59,6 +59,7 @@
             this.ch2_HorasAt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ch2_TotalHoras = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.fld2_Plano = new System.Windows.Forms.OpenFileDialog();
+            this.tbp_ReadFiles = new System.Windows.Forms.TabPage();
             this.tbc_Aulas.SuspendLayout();
             this.tbp_RegistoAulas.SuspendLayout();
             this.mns1_Navegacao.SuspendLayout();
@@ -75,6 +76,7 @@
             // 
             this.tbc_Aulas.Controls.Add(this.tbp_RegistoAulas);
             this.tbc_Aulas.Controls.Add(this.tbp_Plano);
+            this.tbc_Aulas.Controls.Add(this.tbp_ReadFiles);
             this.tbc_Aulas.Location = new System.Drawing.Point(12, 13);
             this.tbc_Aulas.Name = "tbc_Aulas";
             this.tbc_Aulas.SelectedIndex = 0;
@@ -364,8 +366,17 @@
             // 
             // fld2_Plano
             // 
-            this.fld2_Plano.FileName = "openFileDialog1";
             this.fld2_Plano.FileOk += new System.ComponentModel.CancelEventHandler(this.fld2_Plano_FileOk);
+            // 
+            // tbp_ReadFiles
+            // 
+            this.tbp_ReadFiles.Location = new System.Drawing.Point(4, 29);
+            this.tbp_ReadFiles.Name = "tbp_ReadFiles";
+            this.tbp_ReadFiles.Padding = new System.Windows.Forms.Padding(3);
+            this.tbp_ReadFiles.Size = new System.Drawing.Size(1414, 553);
+            this.tbp_ReadFiles.TabIndex = 2;
+            this.tbp_ReadFiles.Text = "Ler Ficheiros";
+            this.tbp_ReadFiles.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -378,6 +389,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Registo de Faltas";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tbc_Aulas.ResumeLayout(false);
             this.tbp_RegistoAulas.ResumeLayout(false);
             this.tbp_RegistoAulas.PerformLayout();
@@ -428,6 +440,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsi1_GenerateJSON;
         private System.Windows.Forms.TextBox txt2_Search;
         private System.Windows.Forms.ToolStripMenuItem tsi2_GenerateBIN;
+        private System.Windows.Forms.TabPage tbp_ReadFiles;
     }
 }
 
